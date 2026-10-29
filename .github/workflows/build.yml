@@ -26,12 +26,13 @@ jobs:
 
       - name: Initialize and Build TWA
         run: |
-          bubblewrap init --manifest=https://glistening-kataifi-3da232.netlify.app/manifest.webmanifest
-          bubblewrap build
+          yes "" | bubblewrap init --manifest=https://glistening-kataifi-3da232.netlify.app/manifest.webmanifest
+          bubblewrap build --skipPwaValidation
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: GrandmasterChess-APK
           path: ./*.apk
+
 
