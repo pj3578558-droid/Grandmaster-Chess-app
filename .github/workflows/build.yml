@@ -1,0 +1,36 @@
+name: Build TWA APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Bubblewrap CLI
+        run: npm install -g @bubblewrap/cli
+
+      - name: Initialize and Build TWA
+        run: |
+          yes "" | bubblewrap init --manifest=https://glistening-kataifi-3da232.netlify.app/manifest.webmanifest
+          bubblewrap build --skipPwaValidation
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GrandmasterChess-APK
+          path: ./*.apk
